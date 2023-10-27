@@ -1,22 +1,23 @@
 complex_3d_plot <- function(
     FUN = function(z) return((z ^ 2 + 1) / (z ^ 2 - 1)),
+    range = -5:5,
     res = 1,
-    re = seq(-5, 5, res),
-    im = seq(-5, 5, res),
     n_color = 1000,
     color_range = c("red", "blue"),
     cutoff = 9/10) {
   
   # calculate values
+  re <- seq(min(range), max(range), by = res)
+  im <- seq(min(range), max(range), by = res)
   z <- outer(re, im, function(x, y) complex(real = x, imaginary = y))
   y <- FUN(z)
   mod_y <- Mod(y)
   arg_y <- Arg(y)
   
   # generate color scale
-  color_scale <- colorRampPalette(col_range)
+  color_scale <- colorRampPalette(color_range)
   
-  # generate desired number of color breaks
+  # generate desired number of color breaks (lightgrey = NA)
   colors <- c(color_scale(n_color), "lightgrey")
   
   # compute the arg-value at the facet centres
